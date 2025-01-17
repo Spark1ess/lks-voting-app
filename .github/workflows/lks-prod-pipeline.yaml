@@ -27,9 +27,8 @@ jobs:
           aws-region: us-east-1
 
     - name : login ECR
-      run : |
-        aws ecr get-login-password --region us-east-1 | docker login --username aws --password-stdin 939984903034.dkr.ecr.us-east-1.amazonaws.com
-
+      uses: aws-actions/amazon-ecr-login@v1
+      
     - name : push ecr image
       env : 
         ECR_REGISTRY : 939984903034.dkr.ecr.us-east-1.amazonaws.com/lks-voting-image
