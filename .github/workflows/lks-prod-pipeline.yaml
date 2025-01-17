@@ -27,15 +27,16 @@ jobs:
           aws-region: us-east-1
 
     - name : login ECR
-      run :|
-      aws ecr get-login-password --region us-east-1 | docker login --username aws --password-stdin 939984903034.dkr.ecr.us-east-1.amazonaws.com
+      run : |
+        aws ecr get-login-password --region us-east-1 | docker login --username aws --password-stdin 939984903034.dkr.ecr.us-east-1.amazonaws.com
 
     - name : push ecr image
-      ECR_REGISTRY: 939984903034.dkr.ecr.us-east-1.amazonaws.com
-      ECR_REPO : lks-voting-image
-      VOTE_IMAGE_TAG : Vote-dev-${{github.run_number}}
-      RESULT_IMAGE_TAG : Result-dev-${{github.run_number}}
-      WORKER_IMAGE_TAG : Worker-dev-${{github.run_number}}
+      env : 
+        ECR_REGISTRY : 939984903034.dkr.ecr.us-east-1.amazonaws.com/lks-voting-image
+        ECR_REPO : lks-voting-image
+        VOTE_IMAGE_TAG : Vote-dev-${{github.run_number}}
+        RESULT_IMAGE_TAG : Result-dev-${{github.run_number}}
+        WORKER_IMAGE_TAG : Worker-dev-${{github.run_number}}
       run : |
         docker build -t vote-image ./vote
         docker tag vote-image $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
