@@ -3,7 +3,7 @@ name : prod pipeline
 on:
   push:
     branches:
-      - dev
+      - prod
 
 jobs:
   build:
