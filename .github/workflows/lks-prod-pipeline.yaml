@@ -1,0 +1,42 @@
+name : prod pipeline
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    name: LKS build Pipeline
+    runs-on: ubuntu-latest
+    steps:
+    - name: Check repo
+      uses: actions/checkout@v3
+
+    - name : update docker
+      run : |
+        sudo apt install docker-ce -y
+        docker --version
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
+
+    - name : login ECR
+      run :|
+      aws ecr get-login-password --region us-east-1 | docker login --username aws --password-stdin 939984903034.dkr.ecr.us-east-1.amazonaws.com
+
+    - name : push ecr image
+      ECR_REGISTRY: 939984903034.dkr.ecr.us-east-1.amazonaws.com
+      ECR_REPO : lks-voting-image
+      VOTE_IMAGE_TAG : Vote-dev-${{github.run_number}}
+      RESULT_IMAGE_TAG : Result-dev-${{github.run_number}}
+      WORKER_IMAGE_TAG : Worker-dev-${{github.run_number}}
+      run : |
+        docker build -t vote-image ./vote
+        docker tag vote-image $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$VOTE_IMAGE_TAG
