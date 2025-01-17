@@ -43,7 +43,7 @@ jobs:
         docker build -t result-image ./result
         docker tag result-image $ECR_REGISTRY/$ECR_REPO:$RESULT_IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPO:$RESULT_IMAGE_TAG
-        docker build -t vote-image ./worker
+        docker build -t worker-image ./worker
         docker tag worker-image $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
         
