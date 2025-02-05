@@ -31,7 +31,7 @@ jobs:
       
     - name : push ecr image
       env : 
-        ECR_REGISTRY : 939984903034.dkr.ecr.us-east-1.amazonaws.com
+        ECR_REGISTRY : 645693533396.dkr.ecr.us-east-1.amazonaws.com
         ECR_REPO : lks-voting-image
         VOTE_IMAGE_TAG : Vote-dev-${{github.run_number}}
         RESULT_IMAGE_TAG : Result-dev-${{github.run_number}}
