@@ -47,3 +47,4 @@ jobs:
         docker tag worker-image $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
         
+
