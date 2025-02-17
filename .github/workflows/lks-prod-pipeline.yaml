@@ -51,15 +51,13 @@ jobs:
         docker tag worker-image $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
 
-
-jobs:
-  notif:
-    name: Sent Notification
+notif:
+    name: Send Notification
     runs-on: ubuntu-latest
     environment: Production
     steps:    
     - name: Publish Message To SNS Subscribers
       env:
         TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
-      run: aws sns publish --topic-arn $TOPIC_ARN --subject "Helo from <Provinsi>!" --message "New version The Voting App from <Provinsi> is Released !!"
-       
+      run: |
+        aws sns publish --topic-arn $TOPIC_ARN --subject "Hello from <Provinsi>!" --message "New version of The Voting App from <Provinsi> is Released !!"
