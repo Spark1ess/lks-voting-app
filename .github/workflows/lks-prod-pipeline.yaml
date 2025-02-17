@@ -22,7 +22,6 @@ jobs:
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
@@ -89,7 +88,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: worker/task-definition.json
-          container-name: lks-td-worker
+          container-name: lks-worker-container
           image: ${{steps.login-ecr.outputs.registry}}/lks-voting-image:worker-prod-latest
 
       -  name: Deploy Amazon ECS task definition Vote
@@ -115,7 +114,6 @@ jobs:
            service: lks-worker-service
            cluster: lks-voting-cluster
            wait-for-service-stability: true
- 
   notif:
     name: Send Notification
     runs-on: ubuntu-latest
