@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - prod
+env:
+  AWS_REGION: us-east-1                 
+  ENV: "prod"
+
 
 jobs:
   build:
@@ -46,16 +50,6 @@ jobs:
         docker build -t worker-image ./worker
         docker tag worker-image $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
         docker push $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
-
-name: Sent notification to email
-on:
-  push:
-    branches:
-      - "prod"
-
-env:
-  AWS_REGION: us-east-1                 
-  ENV: "prod"
 
 jobs:
   notif:
