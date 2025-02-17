@@ -1,70 +1,70 @@
-name: prod pipeline
+name : prod pipeline
 
 on:
   push:
     branches:
       - prod
-
 env:
   AWS_REGION: us-east-1                 
   ENV: "prod"
+
 
 jobs:
   build:
     name: LKS build Pipeline
     runs-on: ubuntu-latest
     steps:
-      - name: Check repo
-        uses: actions/checkout@v3
+    - name: Check repo
+      uses: actions/checkout@v3
 
-      - name: update docker 
-        run: |
-          sudo apt install docker-ce -y
-          docker --version
+    - name : update docker 
+      run : |
+        sudo apt install docker-ce -y
+        docker --version
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
 
-      - name: login ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
+    - name : login ECR
+      uses: aws-actions/amazon-ecr-login@v1
       
-      - name: push ecr image
-        env: 
-          ECR_REGISTRY: 645693533396.dkr.ecr.us-east-1.amazonaws.com
-          ECR_REPO: lks-voting-image
-          VOTE_IMAGE_TAG: Vote-dev-${{ github.run_number }}
-          RESULT_IMAGE_TAG: Result-dev-${{ github.run_number }}
-          WORKER_IMAGE_TAG: Worker-dev-${{ github.run_number }}
-        run: |
-          docker build -t vote-image ./vote
-          docker tag vote-image $ECR_REGISTRY/$ECR_REPO:$VOTE_IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPO:$VOTE_IMAGE_TAG
-          docker build -t result-image ./result
-          docker tag result-image $ECR_REGISTRY/$ECR_REPO:$RESULT_IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPO:$RESULT_IMAGE_TAG
-          docker build -t worker-image ./worker
-          docker tag worker-image $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
-          docker push $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
+    - name : push ecr image
+      env : 
+        ECR_REGISTRY : 645693533396.dkr.ecr.us-east-1.amazonaws.com
+        ECR_REPO : lks-voting-image
+        VOTE_IMAGE_TAG : Vote-dev-${{github.run_number}}
+        RESULT_IMAGE_TAG : Result-dev-${{github.run_number}}
+        WORKER_IMAGE_TAG : Worker-dev-${{github.run_number}}
+      run : |
+        docker build -t vote-image ./vote
+        docker tag vote-image $ECR_REGISTRY/$ECR_REPO:$VOTE_IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPO:$VOTE_IMAGE_TAG
+        docker build -t result-image ./result
+        docker tag result-image $ECR_REGISTRY/$ECR_REPO:$RESULT_IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPO:$RESULT_IMAGE_TAG
+        docker build -t worker-image ./worker
+        docker tag worker-image $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPO:$WORKER_IMAGE_TAG
+
 
   notif:
     name: Send Notification
     runs-on: ubuntu-latest
     environment: Production
     steps:
-      - name: Configure AWS Credentials
+      - name: Configure AWS Credentials  # ✅ Added this step
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: us-east-1
-
+          
       - name: Publish Message To SNS Subscribers
         env:
           TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
