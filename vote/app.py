@@ -17,8 +17,8 @@ app.logger.handlers.extend(gunicorn_error_logger.handlers)
 app.logger.setLevel(logging.INFO)
 
 def get_redis():
-    if not hasattr(g, 'master.lks-redis.rvrz8p.use1.cache.amazonaws.com:6379'):
-        g.redis = Redis(host="master.lks-redis.rvrz8p.use1.cache.amazonaws.com:6379", db=0, socket_timeout=5)
+    if not hasattr(g, 'master.lks-redis.rvrz8p.use1.cache.amazonaws.com'):
+        g.redis = Redis(host="master.lks-redis.rvrz8p.use1.cache.amazonaws.com", db=0, socket_timeout=5)
     return g.redis
 
 @app.route("/", methods=['POST','GET'])
