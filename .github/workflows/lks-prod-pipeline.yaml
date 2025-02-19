@@ -88,7 +88,7 @@ jobs:
         uses: aws-actions/amazon-ecs-render-task-definition@v1
         with:
           task-definition: worker/task-definition.json
-          container-name: lks-td-worker
+          container-name: lks-worker-container
           image: ${{steps.login-ecr.outputs.registry}}/lks-voting-image:worker-prod-latest
 
       -  name: Deploy Amazon ECS task definition Vote
@@ -114,23 +114,23 @@ jobs:
            service: lks-worker-service
            cluster: lks-voting-cluster
            wait-for-service-stability: true
-#  notif:
-#    name: Send Notification
-#    runs-on: ubuntu-latest
-#    environment: Production
-#    steps:
-#      - name: Configure AWS Credentials
- #       uses: aws-actions/configure-aws-credentials@v1
-#        with:
-#          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
-  #        aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-   #       aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
- #         aws-region: us-east-1
+  notif:
+    name: Send Notification
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: us-east-1
           
-  #    - name: Publish Message To SNS Subscribers
-  #      env:
-   #       TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
-   #     run: |
-   #       aws sns publish --topic-arn $TOPIC_ARN --subject "Hello from <Provinsi>!" --message "New version of The Voting App from <Provinsi> is Released !!"
+      - name: Publish Message To SNS Subscribers
+        env:
+          TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
+        run: |
+          aws sns publish --topic-arn $TOPIC_ARN --subject "Hello from <Provinsi>!" --message "New version of The Voting App from <Provinsi> is Released !!"
 
 
