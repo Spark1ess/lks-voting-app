@@ -1,13 +1,13 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-1:113922591568:task-definition/lks-td-result:4",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:021691354451:task-definition/lks-td-result:1",
     "containerDefinitions": [
         {
             "name": "lks-result-container",
-            "image": "113922591568.dkr.ecr.us-east-1.amazonaws.com/lks-voting-image:result-prod-latest",
+            "image": "021691354451.dkr.ecr.us-east-1.amazonaws.com/lks-voting-image:result-prod-latest",
             "cpu": 0,
             "portMappings": [
                 {
-                    "name": "lks-result-container-81-tcp",
+                    "name": "lks-result-container-80-tcp",
                     "containerPort": 80,
                     "hostPort": 80,
                     "protocol": "tcp",
@@ -16,8 +16,10 @@
             ],
             "essential": true,
             "environment": [],
+            "environmentFiles": [],
             "mountPoints": [],
             "volumesFrom": [],
+            "ulimits": [],
             "logConfiguration": {
                 "logDriver": "awslogs",
                 "options": {
@@ -34,10 +36,10 @@
         }
     ],
     "family": "lks-td-result",
-    "taskRoleArn": "arn:aws:iam::113922591568:role/LabRole",
-    "executionRoleArn": "arn:aws:iam::113922591568:role/LabRole",
+    "taskRoleArn": "arn:aws:iam::021691354451:role/LabRole",
+    "executionRoleArn": "arn:aws:iam::021691354451:role/LabRole",
     "networkMode": "awsvpc",
-    "revision": 4,
+    "revision": 1,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -86,7 +88,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2025-02-18T01:33:10.629Z",
-    "registeredBy": "arn:aws:sts::113922591568:assumed-role/voclabs/user3842243=110113-5",
+    "registeredAt": "2025-02-19T01:29:32.065Z",
+    "registeredBy": "arn:aws:sts::021691354451:assumed-role/voclabs/user3851965=103064-12",
     "tags": []
 }
