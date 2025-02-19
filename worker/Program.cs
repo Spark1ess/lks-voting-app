@@ -17,7 +17,7 @@ namespace Worker
             try
             {
                 var pgsql = OpenDbConnection("Host=lks-rds.c0nnpudqyaoz.us-east-1.rds.amazonaws.com;Port=5432;Database=postgres;Username=admins;Password=LKSNCC2024;");
-                var redisConn = OpenRedisConnection("master.lks-redis.btibcp.use1.cache.amazonaws.com");
+                var redisConn = OpenRedisConnection("master.lks-redis.btibcp.use1.cache.amazonaws.com:6379");
                 var redis = redisConn.GetDatabase();
 
                 // Keep alive is not implemented in Npgsql yet. This workaround was recommended:
@@ -34,7 +34,7 @@ namespace Worker
                     // Reconnect redis if down
                     if (redisConn == null || !redisConn.IsConnected) {
                         Console.WriteLine("Reconnecting Redis");
-                        redisConn = OpenRedisConnection("master.lks-redis.btibcp.use1.cache.amazonaws.com");
+                        redisConn = OpenRedisConnection("master.lks-redis.btibcp.use1.cache.amazonaws.com:6379");
                         redis = redisConn.GetDatabase();
                     }
                     string json = redis.ListLeftPopAsync("votes").Result;
