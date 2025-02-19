@@ -131,5 +131,5 @@ jobs:
         env:
           TOPIC_ARN: ${{ secrets.AWS_SNS_ARN }}
         run: |
-          aws sns publish --topic-arn $TOPIC_ARN --subject "Hello from <Provinsi>!" --message "New version of The Voting App from <Provinsi> is Released !!"
+          aws sns publish --topic-arn $TOPIC_ARN --subject "Hello from Bali!" --message "New version of The Voting App from Bali is Released !!"
 
